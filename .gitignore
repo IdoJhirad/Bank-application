@@ -1,0 +1,17 @@
+*
+*.env
+!*.java
+!*.h
+!*.c
+!makefile
+node_modules
+!*/
+
+!*.sql
+
+!*.html
+!*.css
+!*.jsp
+!*.js
+!*.json
+!*.gitignore
