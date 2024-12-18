@@ -4,9 +4,9 @@
 !*.h
 !*.c
 !makefile
-node_modules
-!*/
 
+!*/
+node_modules
 !*.sql
 
 !*.html
@@ -14,4 +14,4 @@ node_modules
 !*.jsp
 !*.js
 !*.json
-!*.gitignore
+!.gitignore
