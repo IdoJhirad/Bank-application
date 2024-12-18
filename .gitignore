@@ -1,18 +1,17 @@
-*
-.*
-!*.java
-!*.h
-!*.c
-!makefile
 
-!*/
-node_modules
-.idea
-!*.sql
 
-!*.html
-!*.css
-!*.jsp
-!*.js
-!*.json
-!.gitignore
+# Ignore environment variables file
+.env
+.env.*
+
+
+# Ignore test coverage reports
+/coverage
+
+# Ignore IDE and editor folders/files
+/.idea/
+
+# Ignore node modules
+/node_modules
+
+
