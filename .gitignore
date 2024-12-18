@@ -14,4 +14,6 @@
 # Ignore node modules
 /node_modules
 
+# Ignore node_modules anywhere
+**/node_modules
 
