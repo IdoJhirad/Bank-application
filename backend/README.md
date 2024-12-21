@@ -62,8 +62,9 @@
       ```
 - **Responses**:
     - `200`: Login successful.
-    - `401`: Invalid credentials.
-
+    - `400`: Missing required field: [field_name]
+    - `404`: User not found
+    - `401`: Invalid credentials
 ---
 
 #### **Log Out the Current User**

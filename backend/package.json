@@ -4,7 +4,7 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "dev": "nodemon --watch --trace-warnings server.j",
+    "dev": "nodemon --watch --trace-warnings server.js",
     "test": "jest  --detectOpenHandles"
   },
   "keywords": [],
@@ -17,7 +17,8 @@
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "jsonwebtoken": "^9.0.2",
-    "mongoose": "^8.9.0"
+    "mongoose": "^8.9.0",
+    "nodemailer": "^6.9.16"
   },
   "devDependencies": {
     "@types/node": "^22.10.2",
