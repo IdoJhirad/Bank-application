@@ -8,7 +8,7 @@ const transporter = nodemailer.createTransport({
     },
 });
 
-const sendMail = async(receiverEmail,subject,body) => {
+const sendEmail = async(receiverEmail,subject,body) => {
     await transporter.sendMail({
         from: process.env.EMAIL,
         to: receiverEmail,
@@ -17,4 +17,4 @@ const sendMail = async(receiverEmail,subject,body) => {
     });
 };
 
-module.exports = sendMail;
+module.exports = sendEmail;

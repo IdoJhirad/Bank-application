@@ -2,7 +2,7 @@ const request = require("supertest");  // Import supertest
 const app = require("../../app");
 const dbConnection = require("../database/db");
 const users = require("../models/UserSchema");
-
+const sendEmail = require('../utils/SendEmail');
 let account1 = {
     "name":"ido test1",
     "password": "ido1",
@@ -183,7 +183,7 @@ describe("POST /auth/login", () => {
     test("should return authentication failed", async () => {
         const login_data = {
             email: "ido3@gmail.com",
-            password: "asfsafddas"
+            password: "=fcxgfvchjbkjn"
         }
         const res = await request(app)
             .post("/auth/login")
@@ -194,4 +194,32 @@ describe("POST /auth/login", () => {
         expect(res.body.message).toBe("Authentication failed");
     }, 10000);
 
+});
+
+jest.mock('../utils/SendEmail', () => jest.fn());
+
+describe("POST /auth/reset-password", () => {
+    test("should send a reset email successfully", async () => {
+        const res = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: account1.email })
+            .expect("Content-Type", /json/)
+            .expect(200);
+
+        expect(res.body.message).toBe("Password reset token has been sent to your email. Use it to reset your password.");
+        expect(require('../utils/SendEmail').sendEmail).toHaveBeenCalledWith(
+            account1.email,
+            expect.any(String), // Subject
+            expect.stringContaining("Reset your password") // Email body
+        );
+    }, 10000);
+
+    test("should fail with non-existent user", async () => {
+        const res = await request(app)
+            .post("/auth/reset-password")
+            .send({ email: "nonexistent@gmail.com" })
+            .expect("Content-Type", /json/)
+            .expect(404);
+        expect(res.body.message).toBe("User not found");
+    }, 10000);
 });

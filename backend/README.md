@@ -124,35 +124,13 @@
 ---
 
 ### User Endpoints
+```
+    .get("/balance", accountControllers.getBalance)
+    .get("/transactions", accountControllers.getTransactionHistory)
+    .get("/info", accountControllers.getAccountInfo)
+    .put("/info", accountControllers.changeAccountInfo);
 
-#### **Get User Info**
-- **URL**: `/users/me`
-- **Method**: `GET`
-- **Summary**: Retrieve user information.
-- **Responses**:
-    - `200`: User info retrieved.
-    - `401`: Unauthorized.
-
----
-
-#### **Get User Balance**
-- **URL**: `/users/me/balance`
-- **Method**: `GET`
-- **Summary**: Retrieve user balance.
-- **Responses**:
-    - `200`: Balance retrieved.
-    - `401`: Unauthorized.
-
----
-
-#### **Get Transaction History**
-- **URL**: `/users/me/transactions`
-- **Method**: `GET`
-- **Summary**: Retrieve transaction history.
-- **Responses**:
-    - `200`: Transactions retrieved.
-    - `401`: Unauthorized.
-
+```
 ---
 
 ### Transaction Endpoints

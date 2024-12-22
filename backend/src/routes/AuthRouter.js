@@ -11,6 +11,6 @@ router
     .post("/logout", authController.logout)
     .post("/reset-password", authController.resetPassword)
     .post("/change-password", verifyToken ,authController.changePassword)
-    .post("/reset-password/confirm", authController.changePasswordResetToken);
-
+    .post("/reset-password/confirm", authController.changePasswordResetToken)
+    .get("/check-auth", verifyToken, authController.checkAuth);
 module.exports = router;

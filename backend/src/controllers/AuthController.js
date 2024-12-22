@@ -1,9 +1,14 @@
 //for encryption password
 const bcrypt=require('bcryptjs');
+const crypto = require('crypto');
+
 const user = require('../models/UserSchema');
 const {generateToken} = require('../utils/GenerateToken');
-const {convertDocumentToJson} = require('../utils/Convertor');
 const passwordResetToken = require('../models/PasswordResetToken');
+const sanitizeUser = require('../utils/SanitizeUser');
+const sendEmail = require('../utils/SendEmail');
+
+
 
 exports.register = async (req, res) => {
     try {
@@ -56,22 +61,22 @@ exports.login = async (req, res) => {
             return res.status(404).json({ message: "User not found" });
         }
         //validate the password in the body to the one hashed and stored
-        const validatePassword = bcrypt.compare(req.body.password, userData.password);
+        const validatePassword = await bcrypt.compare(req.body.password, userData.password);
         if(!validatePassword){
             return res.status(401).json({ message: "Authentication failed"})
         }
+        console.log("password valid",req.body.password);
         //generating jwt token
-        const token = generateToken({email:userData.email})
+        const token = generateToken(sanitizeUser(userData));
         //set jwt in responds cookie
         res.cookie('token',token, {
             httpOnly: true,
             sameSite: 'Lax',
         })
-        return res.status(200).json(convertDocumentToJson(userData))
+        return res.status(200).json(sanitizeUser(userData))
     } catch (e) {
         console.log(e)
         return res.status(500).json({message : "Internal server error" })
-
     }
 }
 
@@ -82,17 +87,17 @@ exports.logout = async (req, res) => {
 exports.changePassword = async (req, res) => {
     const { currentPassword, newPassword } = req.body;
     try {
-        const user = await user.findById(req.user.id); // req.user is set by the `verifyToken` middleware
-        if (!user) {
+        const userData = await user.findById(req.user.id); // req.user is set by the `verifyToken` middleware
+        if (!userData) {
             return res.status(404).json({ message: 'User not found' });
         }
         // Validate the current password
-        const isMatch = await bcrypt.compare(currentPassword, user.password);
+        const isMatch = await bcrypt.compare(currentPassword, userData.password);
         if (!isMatch) {
             return res.status(400).json({ message: 'Current password is incorrect' });
         }
-        user.password = await bcrypt.hash(newPassword, 10);
-        await user.save();
+        userData.password = await bcrypt.hash(newPassword, 10);
+        await userData.save();
 
         res.clearCookie('token'); // Force log in
         res.status(200).json({ message: 'Password changed successfully, please log in again' });
@@ -139,8 +144,9 @@ exports.resetPassword = async (req, res) => {
         if (!userData) {
             return res.status(404).json({message: "User not found"});
         }
+        console.log(userData._id)
         //remove the old resetpasword tokens of this user . they are unnecessary
-        await passwordResetToken.deleteMany({email: userData.email});
+        await passwordResetToken.deleteMany({userId:userData._id});
 
         // Generate a random reset token
         const resetToken = crypto.randomBytes(32).toString('hex');
@@ -149,7 +155,7 @@ exports.resetPassword = async (req, res) => {
 
         //token expired time
         const expiresAt = Date.now() + 10 * 60 * 1000;
-
+        console.log("u here")
         const newToken = new passwordResetToken({
             userId: userData._id,
             token: hashedToken,
@@ -168,10 +174,13 @@ exports.resetPassword = async (req, res) => {
         await sendEmail(userData.email,'Password Reset Link for Your Bank Account', body);
 
         res.status(200).json({
-            message: 'Password reset token has sent to your email. Use it to reset your password.'});
+            message: "Password reset token has been sent to your email. Use it to reset your password."});
     }
     catch(err){
-        console.error(error);
+        console.error(err);
         res.status(500).json({ message: 'Server error' });
     }
+}
+exports.checkAuth = async (req, res) => {
+    res.status(200).json({ message: 'User is logged in' });
 }

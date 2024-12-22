@@ -5,6 +5,8 @@ const express = require('express');
 const cookieParser = require("cookie-parser");
 
 const authRouter = require("./src/routes/AuthRouter");
+const accountRouter = require("./src/routes/AccountRouter");
+const transactionRouter = require("./src/routes/TransactionRouter");
 const app = express();
 
 //addMiddleware
@@ -28,5 +30,6 @@ app.use(cors({
 
 //the routes
 app.use("/auth", authRouter);
-
+app.use("/account", accountRouter);
+app.use("/transaction", transactionRouter);
 module.exports = app;
