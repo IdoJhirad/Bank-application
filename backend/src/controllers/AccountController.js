@@ -4,7 +4,7 @@ const sanitizeUser = require('../utils/SanitizeUser');
 
 exports.getBalance = async (req, res) => {
     try{
-        console.log(req);
+        //console.log(req);
         const userID = req.user._id;
         const user = await UserModel.findById(userID);
         if(!user){
@@ -22,7 +22,7 @@ exports.getTransactionHistory = async (req, res) => {
             $or:[{sender:userID},{receiver:userID}]
         }).sort({timestamp:-1}).limit(20);
         console.log("find the transaction ",transaction);
-        res.status(200).json(transaction);
+        res.status(200).json({transaction});
     } catch(err){
         console.error(err);
         res.status(500).json({ message: 'Server error' });
