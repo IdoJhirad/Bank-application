@@ -1,4 +1,5 @@
 import React, {useState} from "react";
+import {Box, Button, TextField, Typography} from "@mui/material";
 
 function DynamicForm({fields ,onSubmit, title, submitText}) {
     const [formData, setFormData] = useState(
@@ -18,24 +19,43 @@ function DynamicForm({fields ,onSubmit, title, submitText}) {
     }
 
     return (
-        <>
-            <h1>{title}</h1>
-            <form onSubmit={handleSubmit}>
-                {fields.map((field) => (
-                    <div key={field.name}>
-                        <label>{field.label}</label>
-                        <input type={field.type}
-                               name={field.name}
-                               placeholder={field.placeholder}
-                               value={formData[field.name]}
-                               onChange={handleChange}
-                               required={field.required}
-                        />
-                    </div>
-                ))}
-                <button type="submit">{submitText}</button>
-            </form>
-        </>
+        <Box
+            component="form"
+            onSubmit={handleSubmit}
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            sx={{
+                p: 3,
+                borderRadius: 2,
+                boxShadow: 3,
+                maxWidth: 400,
+                width: "100%",
+            }}
+        >
+            <Typography variant="h5" gutterBottom>
+                {title}
+            </Typography>
+            {fields.map((field) => (
+                <TextField
+                    key={field.name}
+                    id={field.name}
+                    label={field.label}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name]}
+                    onChange={handleChange}
+                    required={field.required}
+                    fullWidth
+                    margin="normal"
+                    type={field.type}
+                />
+            ))}
+            <Button type="submit" variant="contained" sx={{ mt: 2 }}>
+                {submitText}
+            </Button>
+        </Box>
     )
 
 }

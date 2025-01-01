@@ -3,7 +3,7 @@ import axios from "axios";
 import {useNavigate} from "react-router-dom";
 import {Register} from "../components/Auth";
 import {Login} from "../components/Auth";
-
+import {Alert, Box, Typography} from "@mui/material";
 axios.defaults.withCredentials = true;
 
 
@@ -47,8 +47,28 @@ function Home() {
 
     return (
         <>
-            {view === "Login" ? <Login setView={handleSetView} onSubmit={handleLoginSubmit}/> : <Register setView={handleSetView} onSubmit={handleRegisterSubmit} />}
-            {error && <div >{error}</div>}
+            
+            <Box
+                display="flex"
+                flexDirection="column"
+                alignItems="center"
+                justifyContent="center"
+                height="50vh"
+                sx={{ marginTop: 20}}
+            >
+                <Typography
+                    textAlign="center"
+                    variant="h4"
+                    sx={{ marginBottom: 2 }}
+                >
+                    Welcome to Bank of Ido's
+                </Typography>
+                {view === "Login" ? (
+                    <Login setView={handleSetView} onSubmit={handleLoginSubmit} error={error} />
+                ) : (
+                    <Register setView={handleSetView} onSubmit={handleRegisterSubmit} error={error} />
+                )}
+            </Box>
         </>
     );
 }
