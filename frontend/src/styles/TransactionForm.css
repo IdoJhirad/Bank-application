@@ -1,0 +1,36 @@
+/* TransactionForm.css */
+
+/* A wrapper around the transaction form or table results */
+.transaction-container {
+    /* Center this container, add some spacing */
+    margin: 20px auto;
+    max-width: 800px; /* Adjust as needed */
+    padding: 20px;
+    text-align: center; /* Center headings within this container */
+}
+
+/* Optional: style for the heading (e.g. "Deposit Complete") */
+.transaction-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin: 1rem 0;
+}
+
+/* Style your table to look nice */
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+/* Table headings and cells */
+.transaction-table th,
+.transaction-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+}
+
+/* Slightly different background for the table headers */
+.transaction-table th {
+    background-color: #f5f5f5;
+}

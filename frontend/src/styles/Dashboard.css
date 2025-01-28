@@ -1,0 +1,63 @@
+/* Dashboard.css */
+
+/* Container for the entire dashboard, ensures the top margin so it’s not hidden by the header */
+.dashboard-container {
+    margin-top: 20px;
+}
+
+/* MUI Paper enhancements (rounded corners, subtle shadow) */
+.dashboard-container .MuiPaper-root {
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+    transition: box-shadow 0.3s;
+}
+.dashboard-container .MuiPaper-root:hover {
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* The big “Welcome Back” title */
+.dashboard-title {
+    text-align: left; /* left, right, or center—your preference */
+    padding: 16px 0; /* spacing above/below */
+    font-size: 4rem;
+    font-weight: bold;
+    margin-bottom: 5px;
+    margin-top: 5px;
+    color: #161c49;
+
+}
+
+
+.chart-placeholder {
+    border: 2px  #ccc;
+    height: 300px;            /* fixed or remove entirely if you prefer */
+    width: 95%;              /* let it fill the grid cell width */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    transition: border-color 0.3s ;
+}
+
+.chart-placeholder:hover {
+    border-color: #1976d2;
+}
+
+/* Transaction table styling */
+.transaction-table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table-wrapper th,
+.transaction-table-wrapper td {
+    padding: 12px;
+    border-bottom: 1px solid #ddd;
+}
+
+.transaction-table-wrapper th {
+    background-color: #f9f9f9;
+    font-weight: 600;
+}

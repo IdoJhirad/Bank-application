@@ -20,7 +20,7 @@ exports.getTransactionHistory = async (req, res) => {
         const userID = req.user._id;
         const transaction = await TransactionModel.find({
             $or:[{sender:userID},{receiver:userID}]
-        }).sort({timestamp:-1}).limit(20);
+        }).sort({timestamp:-1});
         console.log("find the transaction ",transaction);
         res.status(200).json({transaction});
     } catch(err){

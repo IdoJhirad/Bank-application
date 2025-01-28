@@ -1,7 +1,9 @@
 import React, {useEffect, useState} from "react";
 import axios from "axios";
+import {Typography} from "@mui/material";
+import {formatNIS} from "../utils/utils";
 
-export function Balance({reloadBalance, setReloadBalance}) {
+export function Balance() {
     const [data, setData] = useState(null);
     useEffect(() => {
         axios.get(`${process.env.REACT_APP_SERVER}/account/balance`).then(response => {
@@ -15,11 +17,11 @@ export function Balance({reloadBalance, setReloadBalance}) {
                 setData("Something went wrong");
             }
         })
-    }, [reloadBalance, setReloadBalance]);
+    }, );
     if(data === null) {
         return (<div>Loading...</div>);
     }
-    return (<div>{data}</div>)
+    return <Typography fontSize={"2rem"} variant="h5">Balance:{formatNIS(data)}</Typography>;
 }
 
 

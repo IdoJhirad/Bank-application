@@ -18,7 +18,7 @@ exports.deposit = async (req, res) => {
         user.balance += amount;
         await user.save();
         //record the transaction
-        await TransactionModel.create ({
+        const currTransaction = await TransactionModel.create ({
             sender: userId,
             receiver: userId,
             senderName: user.name,
@@ -26,7 +26,7 @@ exports.deposit = async (req, res) => {
             amount : amount,
             type: "Deposit"
         })
-        res.status(200).json({ message: 'Deposit successfully created!' ,balance: user.balance});
+        res.status(200).json({ message: 'Deposit successfully created!' ,balance: user.balance, transaction: currTransaction});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error.' });
@@ -52,7 +52,7 @@ exports.withdrawal = async (req, res) => {
         user.balance -= amount;
         await user.save();
         //record the transaction
-        await TransactionModel.create ({
+        const currTransaction = await TransactionModel.create ({
             sender: userId,
             receiver: userId,
             senderName: user.name,
@@ -60,7 +60,7 @@ exports.withdrawal = async (req, res) => {
             amount : amount,
             type: "Withdrawal"
         })
-        res.status(200).json({ message: 'Withdrawal successfully created!' ,balance: user.balance});
+        res.status(200).json({ message: 'Withdrawal successfully created!' ,balance: user.balance, transaction: currTransaction});
     } catch (error) {
         console.error(error);
         res.status(500).json({ message: 'Server error.' });
@@ -99,7 +99,7 @@ exports.transfer = async (req, res) => {
         await sender.save({ session });
         await receiver.save({ session });
 
-        await TransactionModel.create({
+        const currTransaction = await TransactionModel.create({
             sender: senderID,
             receiver: receiver._id,
             senderName: sender.name,
@@ -110,7 +110,7 @@ exports.transfer = async (req, res) => {
         // commit the transaction
         await session.commitTransaction();
         await session.endSession();
-        res.status(200).json({ message: 'Transfer successful.', balance: sender.balance });
+        res.status(200).json({ message: 'Transfer successful.', balance: sender.balance , transaction: currTransaction});
 
     } catch (error) {
         // Abort transaction in case of error

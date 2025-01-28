@@ -3,6 +3,9 @@
 const express = require("express");
 const authController = require("../controllers/AuthController");
 const verifyToken=require("../middleware/VerifyToken");
+
+
+
 // router instance that define routes as middleware handlers for different HTTP requests.
 const router = express.Router();
 router

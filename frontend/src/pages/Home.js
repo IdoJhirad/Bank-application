@@ -1,9 +1,8 @@
 import React, {useState} from "react";
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {Register} from "../components/Auth";
-import {Login} from "../components/Auth";
-import {Alert, Box, Typography} from "@mui/material";
+import {Login, Register} from "../components/Auth";
+import {Box, CardMedia, Typography} from "@mui/material";
 axios.defaults.withCredentials = true;
 
 
@@ -46,31 +45,74 @@ function Home() {
     }
 
     return (
-        <>
-            
+        <Box
+            // Outer container to vertically center everything
+            minHeight="calc(100vh - 64px)" // adjust if header is 64px tall
+            display="flex"
+            flexDirection="column"
+            justifyContent="flex-start"
+            alignItems="center"
+            sx={{
+                pt: 8, // Extra top padding to move heading up
+                pb: 4,
+                px: 2,
+            }}
+        >
+            {/* Heading higher up */}
+            <Typography
+                variant="h3"
+                sx={{
+                    mb: 4,
+                    fontWeight: 700,
+                    textAlign: "center",
+                    color: "primary.main", // or your color preference
+                }}
+            >
+                Welcome to Bank of Ido's
+            </Typography>
+
+            {/* Row container: form + image */}
             <Box
                 display="flex"
-                flexDirection="column"
-                alignItems="center"
+                flexDirection={{ xs: "column", md: "row" }}
                 justifyContent="center"
-                height="50vh"
-                sx={{ marginTop: 20}}
+                alignItems="center" // vertically center the form & image
+                gap={8}            // space between the form and the image
+                sx={{ maxWidth: 1300, width: "100%" }}
             >
-                <Typography
-                    textAlign="center"
-                    variant="h4"
-                    sx={{ marginBottom: 2 }}
+                {/* Left: Form */}
+                <Box
+                    display="flex"
+                    flexDirection="column"
+                    alignItems="center"
+                    justifyContent="center"
+                    sx={{
+                        maxWidth: 400, // form width
+                        width: "100%",
+                    }}
                 >
-                    Welcome to Bank of Ido's
-                </Typography>
-                {view === "Login" ? (
-                    <Login setView={handleSetView} onSubmit={handleLoginSubmit} error={error} />
-                ) : (
-                    <Register setView={handleSetView} onSubmit={handleRegisterSubmit} error={error} />
-                )}
-            </Box>
-        </>
-    );
-}
+                    {view === "Login" ? (
+                        <Login setView={handleSetView} onSubmit={handleLoginSubmit} error={error} />
+                    ) : (
+                        <Register setView={handleSetView} onSubmit={handleRegisterSubmit} error={error} />
+                    )}
+                </Box>
 
+                {/* Right: Image, larger, horizontally centered */}
+                <CardMedia
+                    component="img"
+                    alt="Bank illustration"
+                    image="/bankHeader.jpeg"
+                    sx={{
+                        width: { xs: "100%", md: 600 }, // bigger image on medium+ screens
+                        height: "auto",
+                        boxShadow: 3,
+                        borderRadius: 1, // small rounding if you like
+                    }}
+                />
+            </Box>
+        </Box>
+    );
+
+}
 export default Home;

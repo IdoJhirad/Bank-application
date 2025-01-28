@@ -1,6 +1,6 @@
 import React from "react";
 import DynamicForm from "../components/DynamicForm";
-import {Alert, Box, Button, Typography} from "@mui/material";
+import {Alert, Box, Button, } from "@mui/material";
 
 export function Login({setView, onSubmit, error}) {
     const loginFields = [
@@ -40,10 +40,3 @@ export function Register({setView, onSubmit, error}) {
     );
 }
 
-export function Logout({onLogout}) {
-   return (
-       <>
-           <button onClick={onLogout}>Logout</button>
-       </>
-   )
-}
