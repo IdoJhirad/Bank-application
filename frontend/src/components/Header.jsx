@@ -2,12 +2,15 @@
 import React from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import "../styles/Header.css";
-import { Button } from "@mui/material";
+import {Button, FormControlLabel, Switch, useColorScheme} from "@mui/material";
 import axios from "axios";
 
 const Header = () => {
     const navigate = useNavigate();
-
+    const { mode, setMode } = useColorScheme();
+    if (!mode) {
+        return null;
+    }
     const handleLogout = () => {
         localStorage.removeItem("name");
         axios
@@ -24,6 +27,9 @@ const Header = () => {
                         Bank Ido's
                     </h1>
                     <div className="button-group">
+                        <FormControlLabel control={<Switch  checked={mode === 'dark'}
+                                                            onChange={(event) =>
+                                                                setMode(event.target.checked ? 'dark' : 'light')}/>} label="darkMode" />
                         <Button variant="contained"   onClick={() => navigate("/dashboard")}>
                             Dashboard
                         </Button>
@@ -40,6 +46,7 @@ const Header = () => {
                 </div>
 
                 {/* RIGHT side: Logout button */}
+
                 <Button
                     className="logout-button"
                     variant="contained"
@@ -48,6 +55,7 @@ const Header = () => {
                 >
                     LOGOUT
                 </Button>
+
             </header>
 
             {/* Below the fixed header */}

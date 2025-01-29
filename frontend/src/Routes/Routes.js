@@ -9,8 +9,13 @@ import Deposit from "../pages/Deposit";
 import Withdraw from "../pages/Withdraw";
 import Transfer from "../pages/Transfer";
 import Header from "../components/Header";
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
 
-
+const theme = createTheme({
+        colorSchemes: {
+                dark: true,
+        },
+});
 const router = createBrowserRouter(
 [
         {path: "/", element: <Home />},
@@ -18,7 +23,11 @@ const router = createBrowserRouter(
                 path: "/dashboard",
                 element: (
                     <ProtectedRoute>
+                            <ThemeProvider theme={theme}>
+                                    <CssBaseline />
                             <Header />
+                            </ThemeProvider>
+
                     </ProtectedRoute>
                 ),
                 children: [

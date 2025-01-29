@@ -53,7 +53,7 @@ function Dashboard() {
                     setError("Something went wrong. Please try again later.");
                 }
             }).finally(() => setLoading(false));
-    },[]);
+    }, []);
 
     //filter transaction
     const filteredTransactions = useMemo(() => {
@@ -77,26 +77,27 @@ function Dashboard() {
         });
     }, [allTransactions, currentDate]);
 
-    const totalIncome = useMemo(()=> {
-         return filteredTransactions.filter(trx=> (trx.type==="Deposit") || (trx.type==="Transfer" && trx.receiverName=== name)).reduce((sum,trx)=> sum+trx.amount,0);
-    },[filteredTransactions]);
+    const totalIncome = useMemo(() => {
+        return filteredTransactions.filter(trx => (trx.type === "Deposit") || (trx.type === "Transfer" && trx.receiverName === name)).reduce((sum, trx) => sum + trx.amount, 0);
+    }, [filteredTransactions]);
 
-    const totalExpense = useMemo(()=> {
-        return filteredTransactions.filter(trx=> (trx.type==="Withdrawal") || (trx.type==="Transfer" && trx.senderName=== name)).reduce((sum,trx)=> sum+trx.amount,0);
-    },[filteredTransactions]);
+    const totalExpense = useMemo(() => {
+        return filteredTransactions.filter(trx => (trx.type === "Withdrawal") || (trx.type === "Transfer" && trx.senderName === name)).reduce((sum, trx) => sum + trx.amount, 0);
+    }, [filteredTransactions]);
 
-    const depositCount = useMemo(()=> {
-        return filteredTransactions.filter(trx => trx.type === "Deposit").length;
-        },[filteredTransactions]
+    const depositCount = useMemo(() => {
+            return filteredTransactions.filter(trx => trx.type === "Deposit").length;
+        }, [filteredTransactions]
     );
-    const withdrawCount = useMemo(()=> {
+    const withdrawCount = useMemo(() => {
             return filteredTransactions.filter(trx => trx.type === "Withdrawal").length;
-        },[filteredTransactions]
+        }, [filteredTransactions]
     );
-    const transferCount = useMemo(()=> {
+    const transferCount = useMemo(() => {
             return filteredTransactions.filter(trx => trx.type === "Transfer").length;
-        },[filteredTransactions]
+        }, [filteredTransactions]
     );
+
     function handlePrevMonth() {
         const newDate = new Date(currentDate);
         newDate.setMonth(currentDate.getMonth() - 1);
@@ -117,6 +118,7 @@ function Dashboard() {
         }
         setCurrentDate(nextCandidate);
     }
+
     const displayedMonth = currentDate.toLocaleString("default", {
         year: "numeric",
         month: "short",
@@ -139,7 +141,7 @@ function Dashboard() {
     const optionsColumnOption = {
         responsive: true,
         plugins: {
-            legend: { position: "top" },
+            legend: {position: "top"},
             title: {
                 display: true,
                 text: "Income vs. Expense",
@@ -159,7 +161,7 @@ function Dashboard() {
     const pieOption = {
         responsive: true,
         plugins: {
-            legend: { position: "top" },
+            legend: {position: "top"},
             title: {
                 display: true,
                 text: "Transaction Types",
@@ -170,65 +172,86 @@ function Dashboard() {
 
     return (
         <div className="dashboard-container">
-                    <Grid2 item xs={12} md={8}>
-                        <Typography  variant="h3" className="dashboard-title">
-                            Welcome Back, {name}
+            {/* Welcome Back Title */}
+            <Grid2 item xs={12}>
+                <Typography variant="h3" className="dashboard-title">
+                    Welcome Back, {name}
+                </Typography>
+            </Grid2>
+
+            <Grid2 container spacing={2} sx={{ marginTop: 2 }}>
+                {/* LEFT COLUMN: Transactions Table */}
+                <Grid2 item xs={12} md={8}>
+                    <Paper sx={{ padding: 2 }}>
+                        <Typography variant="h6">
+                            Transactions for {displayedMonth}
                         </Typography>
-                    </Grid2>
-
-
-                <Grid2 container spacing={2} sx={{ marginTop: 2 }}>
-                    <Grid2 item xs={12} md={8}>
-                        <Paper sx={{ padding: 2 }}>
-                            <Typography variant="h6">
-                                Transactions for {displayedMonth}
-                            </Typography>
-                            <Button variant="outlined" onClick={handlePrevMonth} sx={{ mr: 2 }}>
-                                Prev Month
-                            </Button>
-                            <Button variant="outlined" onClick={handleNextMonth}>
-                                Next Month
-                            </Button>
-                            <MakeTable
-                                header=""
-                                data={filteredTransactions}
-                                tableHeaders={[
-                                    "senderName",
-                                    "receiverName",
-                                    "amount",
-                                    "status",
-                                    "type",
-                                    "timestamp"
-                                ]}
-                            />
-
-                        </Paper>
-                    </Grid2>
-                    <Grid2 item xs={12} md={6}>
-                        <Grid2 item xs={12} md={4}>
-                            <Paper className="chart-placeholder" sx={{ padding: 2 }}>
-                                <Balance />
-                                <Typography  fontSize={"1.5rem2"} color={totalIncome - totalExpense > 0 ? "green" : "red"}>Monthly flow: {formatNIS(totalIncome-totalExpense)}</Typography>
-                            </Paper>
-                        </Grid2>
-                        <Paper className="chart-placeholder" sx={{ padding: 2 }}>
-                            <Bar
-                                datasetIdKey="id"
-                                data={chartColumnData}
-                                options={optionsColumnOption} />
-                        </Paper>
-                    </Grid2>
-                    <Grid2 item xs={12} md={4}>
-                        <Paper className="chart-placeholder" sx={{ padding: 2 }}>
-                            <Pie data={pieData} options={pieOption} />
-                        </Paper>
-                    </Grid2>
-
+                        <Button variant="outlined" onClick={handlePrevMonth} sx={{ mr: 2 }}>
+                            Prev Month
+                        </Button>
+                        <Button variant="outlined" onClick={handleNextMonth}>
+                            Next Month
+                        </Button>
+                        <MakeTable
+                            header=""
+                            data={filteredTransactions}
+                            tableHeaders={[
+                                "senderName",
+                                "receiverName",
+                                "amount",
+                                "status",
+                                "type",
+                                "timestamp",
+                            ]}
+                        />
+                    </Paper>
                 </Grid2>
+
+                {/* RIGHT COLUMN: Balance up top + Charts underneath */}
+                <Grid2 item xs={12} md={4} container spacing={2} direction="column" >
+                    {/* BALANCE + MONTHLY FLOW on top */}
+                    <Grid2 item>
+                        <Paper
+                            sx={{
+                                padding: 2,
+                                display: "flex",
+                                justifyContent: "space-around",
+                                alignItems: "center",
+                                gap: 1,
+                            }}
+                        >
+                            <Balance />
+                            <Typography
+                                fontSize={"1.2rem"}
+                                color={totalIncome - totalExpense > 0 ? "green" : "red"}
+                            >
+                                Monthly flow: {formatNIS(totalIncome - totalExpense)}
+                            </Typography>
+                        </Paper>
+                    </Grid2>
+
+                    {/* CHARTS BELOW (side by side) */}
+                    <Grid2 item>
+                            <Grid2 container spacing={2}>
+                                <Grid2 item xs={12} md={6}>
+                                    <Paper sx={{ padding: 2 }}>
+                                    <Bar data={chartColumnData} options={optionsColumnOption} />
+                                    </Paper>
+                                </Grid2>
+                                <Grid2 item xs={12} md={6}>
+                                    <Paper sx={{ padding: 2 }}>
+                                    <Pie data={pieData} options={pieOption} />
+                                    </Paper>
+                                </Grid2>
+                            </Grid2>
+
+                    </Grid2>
+                </Grid2>
+            </Grid2>
         </div>
     );
-}
 
+}
 export default Dashboard;
 
 
